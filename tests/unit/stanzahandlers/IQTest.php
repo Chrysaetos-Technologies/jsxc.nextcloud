@@ -76,7 +76,7 @@ class IQTest extends PHPUnit_Framework_TestCase
 			->will($this->returnValue('richard'));
 
 		$user2->expects($this->any())
-			->method(getFullName) // TODO
+			->method('getFullName')
 			->will($this->returnValue('Richard'));
 
 		$user2->expects($this->any())
