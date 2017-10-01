@@ -57,7 +57,6 @@ class PresenceMapperTest extends MapperTestUtility
 
 	public function setupContactsStoreAPI()
 	{
-
 		foreach (\OC::$server->getUserManager()->search('') as $user) {
 			$user->delete();
 		}
