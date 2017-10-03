@@ -68,4 +68,10 @@ class UserManagerUserProvider implements IUserProvider
 		// since we don't have access to the ContactsStore, we don't apply the enhancement privacy rules.
 		$this->hasUserByUID($uid2);
 	}
+
+	public function isUserExcluded($userId)
+	{
+		// to limit inconsistency we only support the settings in NC > 13.0.0
+		return false;
+	}
 }

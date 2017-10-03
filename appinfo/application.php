@@ -247,7 +247,9 @@ class Application extends App {
 				return new ContactsStoreUserProvider(
 					$c->query('OCP\Contacts\ContactsMenu\IContactsStore'),
 					$c->query('ServerContainer')->getUserSession(),
-					$c->query('ServerContainer')->getUserManager()
+					$c->query('ServerContainer')->getUserManager(),
+					$c->query('OCP\IGroupManager'),
+					$c->query('OCP\IConfig')
 				);
 			} else {
 				return new UserManagerUserProvider(

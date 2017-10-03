@@ -3,7 +3,9 @@
 namespace OCA\OJSXC\StanzaHandlers;
 
 use OCA\OJSXC\Db\IQRoster;
+use OCA\OJSXC\Exceptions\TerminateException;
 use OCA\OJSXC\IUserProvider;
+use OCA\OJSXC\NewContentContainer;
 use OCP\IConfig;
 use OCP\IUserManager;
 use Sabre\Xml\Reader;
@@ -40,6 +42,8 @@ class IQ extends StanzaHandler
 	 * @param string $host
 	 * @param IUserManager $userManager
 	 * @param IConfig $config
+	 * @param IUserProvider $userProvider
+	 * @param NewContentContainer $newContentContainer
 	 */
 	public function __construct($userId, $host, IUserManager $userManager, IConfig $config, IUserProvider $userProvider)
 	{
@@ -53,6 +57,7 @@ class IQ extends StanzaHandler
 	/**
 	 * @param array $stanza
 	 * @return IQRoster
+	 * @throws TerminateException TODO
 	 */
 	public function handle(array $stanza)
 	{
@@ -61,7 +66,13 @@ class IQ extends StanzaHandler
 		// if in debug mode we show the own username in the roster for testing
 		$debugMode = $this->config->getSystemValue("debug");
 
-		if ($stanza['value'][0]['name'] === '{jabber:iq:roster}query') {
+		if ($stanza['value'][0]['name'] === '{http://jabber.org/protocol/disco#items}query' || $stanza['value'][0]['name'] === '{http://jabber.org/protocol/disco#info}query') {
+			// the disco queries are currently not implemented but these are the first stanzas send to the server so
+			// they are ideal to terminate the connection if a user is excluded from chatting.
+			if ($this->userProvider->isUserExcluded($this->userId)) {
+				throw new TerminateException();
+			}
+		} elseif ($stanza['value'][0]['name'] === '{jabber:iq:roster}query') {
 			$id = $stanza['attributes']['id'];
 			$iqRoster = new IQRoster();
 			$iqRoster->setType('result');
