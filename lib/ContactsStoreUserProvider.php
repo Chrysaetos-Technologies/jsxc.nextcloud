@@ -55,6 +55,7 @@ class ContactsStoreUserProvider implements IUserProvider
 		if (is_null(self::$cache)) {
 			$result = [];
 			$contacts = $this->contactsStore->getContacts($this->userSession->getUser(), '');
+			// TODO check if contact is disabled
 			foreach ($contacts as $contact) {
 				if ($contact->getProperty('isLocalSystemBook')) {
 					$result[] = new User($contact->getProperty('UID'), $contact->getFullName(), $contact);

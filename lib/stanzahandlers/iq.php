@@ -43,7 +43,6 @@ class IQ extends StanzaHandler
 	 * @param IUserManager $userManager
 	 * @param IConfig $config
 	 * @param IUserProvider $userProvider
-	 * @param NewContentContainer $newContentContainer
 	 */
 	public function __construct($userId, $host, IUserManager $userManager, IConfig $config, IUserProvider $userProvider)
 	{
@@ -78,10 +77,8 @@ class IQ extends StanzaHandler
 			$iqRoster->setType('result');
 			$iqRoster->setTo($this->userId);
 			$iqRoster->setQid($id);
-			//$userId = Application::santizeUserId($user->getUID()); TODO
-//				if ($debugMode || ($userId !== $this->userId && $user->isEnabled())) { // TODO
 			foreach ($this->userProvider->getAllUsers() as $user) {
-				if ($debugMode || (strtolower($user->getUID()) !== $this->userId)) {
+				if ($debugMode || $user->getUID() !== $this->userId) {
 					$iqRoster->addItem($user->getUID() . '@' . $this->host, $user->getFullName());
 				}
 			}

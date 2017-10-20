@@ -27,7 +27,9 @@ class UserManagerUserProvider implements IUserProvider
 		if (is_null(self::$cache)) {
 			$result = [];
 			foreach ($this->userManager->search('') as $user) {
-				$result[] = new User($user->getUID(), $user->getDisplayName(), $user);
+				if ($user->isEnabled()) {
+					$result[] = new User($user->getUID(), $user->getDisplayName(), $user);
+				}
 			}
 
 			self::$cache = $result;
