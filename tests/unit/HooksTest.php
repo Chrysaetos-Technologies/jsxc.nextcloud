@@ -62,7 +62,7 @@ class HooksTest extends PHPUnit_Framework_TestCase
 
 		$this->stanzaMapper = $this->getMockBuilder('OCA\OJSXC\Db\StanzaMapper')->disableOriginalConstructor()->getMock();
 
-		$this->groupManager = $this->getMockBuilder('OCP\IGroupManager')->disableOriginalConstructor()->setMethods(['listen', 'isBackendUsed', 'addBackend', 'clearBackends', 'get', 'groupExists', 'createGroup', 'search', 'getUserGroups', 'getUserGroupIds', 'displayNamesInGroup', 'isAdmin', 'isInGroup'])->getMock();
+		$this->groupManager = $this->getMockBuilder('OCP\IGroupManager')->disableOriginalConstructor()->setMethods(['listen', 'isBackendUsed', 'addBackend', 'clearBackends', 'get', 'groupExists', 'createGroup', 'search', 'getUserGroups', 'getUserGroupIds', 'displayNamesInGroup', 'isAdmin', 'isInGroup', 'getBackends'])->getMock();
 
 		$this->hooks = new Hooks(
 			$this->userManager,
