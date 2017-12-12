@@ -11,8 +11,6 @@ use OCP\IUserManager;
 use OCP\IUser;
 use OCP\IUserSession;
 
-// TODO listen for changes to groups
-
 class RosterPush
 {
 
@@ -162,9 +160,11 @@ class RosterPush
 
 	/**
 	 * When a user is removed from a group, the roster items for the $userId must be removed for all users in the $group
+	 * but only if $userId isn't accessible anymore for a user in $group.
 	 *
 	 * @param IGroup $group
 	 * @param string $userId the user which is removed
+	 * TODO write unit/integration test for this
 	 */
 	public function removeRosterItemForUsersInGroup(IGroup $group, $userId)
 	{
@@ -175,7 +175,9 @@ class RosterPush
 
 
 		foreach ($group->getUsers() as $recipient) {
-			if ($recipient->getUID() !== $userId) {
+			// check if $recipient can still chat with $userId
+			// if not -> remove $userId from $recipient's roster.
+			if (!$this->userProvider->hasUserForUserByUID($recipient, $userId) && $recipient->getUID() !== $userId) {
 				$iq->setTo($recipient->getUID());
 				$this->iqRosterPushMapper->insert($iq);
 			}

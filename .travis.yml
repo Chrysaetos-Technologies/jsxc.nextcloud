@@ -11,7 +11,7 @@ services:
 
 env:
   global:
-    - BRANCH=contactsstore_public_api
+    - BRANCH=master
     - REPO=nc
   matrix:
     - DB=mysql

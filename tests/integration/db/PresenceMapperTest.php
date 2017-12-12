@@ -70,7 +70,7 @@ class PresenceMapperTest extends MapperTestUtility
 		$currentUser = \OC::$server->getUserManager()->createUser('autotest', 'autotest');
 		\OC::$server->getUserSession()->setUser($currentUser);
 
-		if (Application::contactsStoreApiSupporetd()) {
+		if (Application::contactsStoreApiSupported()) {
 			/** @var \OCA\DAV\CardDAV\SyncService $syncService */
 			$syncService = \OC::$server->query('CardDAVSyncService');
 			$syncService->getLocalSystemAddressBook();
